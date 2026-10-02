@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tính thuế TNCN 2026</title>
+<style>
+  :root {
+    --cam: #ff8a00;
+    --cam-dam: #e67700;
+    --nen-header: #fdeee0;
+    --vien-cam: #f5cfae;
+    --chu: #1f2933;
+    --chu-nhat: #5f6b7a;
+    --vien: #d9dee5;
+    --nen-addon: #f1f3f5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 12px;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--chu); background: #fff;
+  }
+  .card {
+    max-width: 720px; margin: 0 auto;
+    border: 1px solid var(--vien-cam); border-radius: 10px; overflow: hidden;
+  }
+  .card-head {
+    background: var(--nen-header); padding: 16px 22px;
+    font-weight: 700; font-size: 17px; border-bottom: 1px solid var(--vien-cam);
+  }
+  .card-body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 18px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  label { display: block; font-weight: 600; font-size: 15px; color: var(--chu-nhat); margin-bottom: 8px; }
+  select, input {
+    width: 100%; height: 42px; padding: 0 14px; font-size: 16px; font-family: inherit;
+    border: 1px solid var(--vien); border-radius: 8px; background: #fff; color: var(--chu);
+  }
+  select:focus, input:focus { outline: 2px solid var(--cam); outline-offset: 0; border-color: var(--cam); }
+  .nhom { display: flex; }
+  .nhom input { border-radius: 8px 0 0 8px; text-align: right; border-right: 0; }
+  .nhom span {
+    display: flex; align-items: center; padding: 0 14px; font-weight: 700;
+    background: var(--nen-addon); border: 1px solid var(--vien); border-radius: 0 8px 8px 0; color: var(--chu-nhat);
+  }
+  details { margin-top: 20px; }
+  summary { cursor: pointer; font-weight: 600; color: var(--chu-nhat); }
+  details .grid { margin-top: 14px; }
+  .nut-wrap { text-align: center; margin-top: 24px; }
+  button {
+    background: var(--cam); color: #fff; border: 0; border-radius: 999px;
+    padding: 13px 30px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer;
+  }
+  button:hover { background: var(--cam-dam); }
+  button:focus-visible { outline: 3px solid #333; outline-offset: 2px; }
+  .loi { color: #c0392b; text-align: center; margin-top: 14px; min-height: 20px; }
+  .ketqua { margin-top: 18px; }
+  .goi-y { text-align: center; color: var(--chu-nhat); max-width: 360px; margin: 6px auto 0; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  td { padding: 8px 4px; border-bottom: 1px solid #eceff2; }
+  td:last-child { text-align: right; white-space: nowrap; }
+  tr.dam td { font-weight: 700; }
+  tr.tong td { font-size: 18px; font-weight: 700; color: #c0392b; border-bottom: 0; padding-top: 14px; }
+  .ghi-chu { font-size: 13px; color: var(--chu-nhat); margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">🧮 Nhập số liệu để tính thuế TNCN</div>
+  <div class="card-body">
+    <div class="grid">
+      <div>
+        <label for="vung">Chọn vùng lương tối thiểu</label>
+        <select id="vung">
+          <option value="5310000">Vùng I — 5,310,000 đ/tháng</option>
+          <option value="4730000">Vùng II — 4,730,000 đ/tháng</option>
+          <option value="4140000">Vùng III — 4,140,000 đ/tháng</option>
+          <option value="3700000">Vùng IV — 3,700,000 đ/tháng</option>
+        </select>
+      </div>
+      <div>
+        <label for="npt">Số người phụ thuộc</label>
+        <select id="npt"></select>
+      </div>
+      <div>
+        <label for="gross">Tổng thu nhập (GROSS)</label>
+        <div class="nhom"><input id="gross" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+      </div>
+      <div>
+        <label for="canCuBH">Tiền lương làm căn cứ đóng bảo hiểm</label>
+        <div class="nhom"><input id="canCuBH" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+      </div>
+    </div>
+
+    <details>
+      <summary>Khoản miễn thuế và giảm trừ khác (không bắt buộc)</summary>
+      <div class="grid">
+        <div>
+          <label for="anCa">Tiền ăn ca (miễn tối đa 1,2 triệu)</label>
+          <div class="nhom"><input id="anCa" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+        </div>
+        <div>
+          <label for="mienKhac">Khoản miễn thuế khác</label>
+          <div class="nhom"><input id="mienKhac" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+        </div>
+        <div>
+          <label for="tuThien">Từ thiện, nhân đạo</label>
+          <div class="nhom"><input id="tuThien" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+        </div>
+        <div>
+          <label for="huuTri">Quỹ hưu trí tự nguyện (trừ tối đa 3 triệu)</label>
+          <div class="nhom"><input id="huuTri" class="tien" inputmode="numeric" placeholder="0"><span>VNĐ</span></div>
+        </div>
+      </div>
+    </details>
+
+    <div class="nut-wrap"><button id="btnTinh" type="button">▶ Tính thuế TNCN</button></div>
+    <div class="loi" id="loi" role="alert"></div>
+
+    <div class="ketqua" id="ketqua">
+      <p class="goi-y">Kết quả tính thuế TNCN sẽ hiển thị ở đây sau khi thực hiện tính thuế.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Hằng số theo quy định mới =====
+  const GIAM_TRU_BAN_THAN = 15500000;
+  const GIAM_TRU_NPT = 6200000;
+  const TRAN_AN_CA = 1200000;
+  const TRAN_HUU_TRI = 3000000;
+  const TRAN_BHXH_BHYT = 50600000;
+  // [cận trên, thuế suất, số trừ công thức rút gọn]
+  const BIEU_THUE = [
+    [10e6, 0.05, 0],
+    [30e6, 0.10, 0.5e6],
+    [60e6, 0.20, 3.5e6],
+    [100e6, 0.30, 9.5e6],
+    [Infinity, 0.35, 14.5e6]
+  ];
+
+  const $ = id => document.getElementById(id);
+  const vnd = n => Math.round(n).toLocaleString("en-US") + " VNĐ";
+  const docSo = id => Number($(id).value.replace(/\D/g, "")) || 0;
+
+  function tinhThue(d) {
+    const anCaMien = Math.min(d.anCa, TRAN_AN_CA);
+    const tongMien = anCaMien + d.mienKhac;
+    const chiuThue = Math.max(0, d.gross - tongMien);
+
+    const nenBHXH = Math.min(d.canCuBH, TRAN_BHXH_BHYT);
+    const nenBHTN = Math.min(d.canCuBH, 20 * d.luongToiThieu);
+    const bhxh = nenBHXH * 0.08, bhyt = nenBHXH * 0.015, bhtn = nenBHTN * 0.01;
+    const baoHiem = bhxh + bhyt + bhtn;
+
+    const giamTruNPT = GIAM_TRU_NPT * d.npt;
+    const huuTri = Math.min(d.huuTri, TRAN_HUU_TRI);
+    const tongGiamTru = GIAM_TRU_BAN_THAN + giamTruNPT + baoHiem + d.tuThien + huuTri;
+    const tntt = Math.max(0, chiuThue - tongGiamTru);
+
+    let canDuoi = 0;
+    const thueBac = BIEU_THUE.map(([canTren, suat]) => {
+      const phan = Math.max(0, Math.min(tntt, canTren) - canDuoi);
+      canDuoi = canTren;
+      return phan * suat;
+    });
+    const tongThue = thueBac.reduce((a, b) => a + b, 0);
+    return { tongMien, chiuThue, bhxh, bhyt, bhtn, baoHiem, giamTruNPT, tongGiamTru, tntt, thueBac, tongThue };
+  }
+
+  function hienKetQua(d, r) {
+    const hang = (ten, giaTri, lop = "") => `<tr class="${lop}"><td>${ten}</td><td>${vnd(giaTri)}</td></tr>`;
+    const nhan = ["5%", "10%", "20%", "30%", "35%"];
+    const bac = r.thueBac.map((t, i) => hang(`Thuế bậc ${i + 1} (${nhan[i]})`, t)).join("");
+    const tyLe = d.gross > 0 ? (r.tongThue / d.gross * 100).toFixed(2) : "0";
+    $("ketqua").innerHTML = `
+      <table>
+        ${hang("Tổng thu nhập (Gross)", d.gross)}
+        ${hang("Các khoản miễn thuế", r.tongMien)}
+        ${hang("Thu nhập chịu thuế", r.chiuThue, "dam")}
+        ${hang("Giảm trừ bản thân", GIAM_TRU_BAN_THAN)}
+        ${hang(`Giảm trừ người phụ thuộc (${d.npt} người)`, r.giamTruNPT)}
+        ${hang("Bảo hiểm bắt buộc (BHXH 8% + BHYT 1,5% + BHTN 1%)", r.baoHiem)}
+        ${hang("Tổng các khoản giảm trừ", r.tongGiamTru, "dam")}
+        ${hang("Thu nhập tính thuế (TNTT)", r.tntt, "dam")}
+        ${bac}
+        <tr class="tong"><td>THUẾ TNCN PHẢI NỘP</td><td>${vnd(r.tongThue)}</td></tr>
+      </table>
+      <p class="ghi-chu">Thuế chiếm ${tyLe}% tổng thu nhập. Thu nhập thực nhận sau bảo hiểm và thuế: ${vnd(d.gross - r.baoHiem - r.tongThue)}.</p>`;
+  }
+
+  function xuLy() {
+    $("loi").textContent = "";
+    if (!$("gross").value.trim()) {
+      $("loi").textContent = "Nhập tổng thu nhập (Gross) để tính thuế.";
+      $("gross").focus();
+      return;
+    }
+    const gross = docSo("gross");
+    const d = {
+      gross,
+      canCuBH: $("canCuBH").value.trim() ? docSo("canCuBH") : gross,  // để trống = bằng Gross
+      npt: Number($("npt").value),
+      luongToiThieu: Number($("vung").value),
+      anCa: docSo("anCa"), mienKhac: docSo("mienKhac"),
+      tuThien: docSo("tuThien"), huuTri: docSo("huuTri")
+    };
+    hienKetQua(d, tinhThue(d));
+  }
+
+  // ===== Khởi tạo giao diện =====
+  const selNPT = $("npt");
+  selNPT.add(new Option("Không có người phụ thuộc", 0));
+  for (let i = 1; i <= 10; i++) selNPT.add(new Option(i + " người phụ thuộc", i));
+
+  // Tự thêm dấu phân cách hàng nghìn khi gõ
+  document.querySelectorAll(".tien").forEach(el => {
+    el.addEventListener("input", () => {
+      const so = el.value.replace(/\D/g, "");
+      el.value = so ? Number(so).toLocaleString("en-US") : "";
+    });
+    el.addEventListener("keydown", e => { if (e.key === "Enter") xuLy(); });
+  });
+  $("btnTinh").addEventListener("click", xuLy);
+</script>
+</body>
+</html>
